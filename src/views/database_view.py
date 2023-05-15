@@ -30,7 +30,8 @@ class DatabaseView(web.View):
           "CURRENCY_NAME": {
             "ANOTHER_CURRENCY_NAME": EXCHANGE_RATE,
             ...
-          }
+          },
+          ...
         }
       }
     """
