@@ -1,4 +1,0 @@
-class CurrencyModel:
-  """
-  Currency model.
-  """
