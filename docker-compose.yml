@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/src
+    working_dir: /src
+    command: python -u main.py
+    ports:
+      - '8000:8000'
+
+  redis:
+    image: redis:alpine3.10
+    ports:
+      - "6379:6379"
