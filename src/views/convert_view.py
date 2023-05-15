@@ -17,7 +17,7 @@ class ConvertView(web.View):
     query_params = ['from', 'to', 'amount']
     params = [self.request.rel_url.query.get(p) for p in query_params]
 
-    if not all(i is not None and i != {} for i in params):
+    if not all(i is not None and i != '' and i != {} for i in params):
       raise HTTPBadRequest(text=json.dumps({
         'success': 0,
         'error': '400 Bad Request',

@@ -4,6 +4,8 @@ import aioredis
 from aiohttp import web
 from aiohttp.web_exceptions import HTTPNotFound
 
+from src.utils.utils import Utils
+
 
 class CurrencyRepository:
   """
@@ -52,12 +54,17 @@ class CurrencyRepository:
     """ Update or rewrite currencies in DB """
     redis: aioredis.Redis = app['redis']
 
-    if not merge:
+    if merge == 0:
       await app['redis'].delete('currencies')
+    else:
+      # Save existing exchange rates [May be slow for large data]
+      data = zip(currencies.keys(),
+                 await redis.hmget('currencies', keys=list(currencies.keys())))
 
-    num = await redis.hset('currencies',
-                           mapping={
-                             k: json.dumps(v) for (k, v) in currencies.items()
-                           })
+      currencies = Utils.merge_dicts(currencies,
+                                     {k: json.loads(d) for k, d in data})
 
-    return f'Successfully updated: {num} records'
+    await redis.hset('currencies',
+                     mapping={k: json.dumps(v) for (k, v) in currencies.items()})
+
+    return 'Updated'
