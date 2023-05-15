@@ -6,6 +6,7 @@ Access: `127.0.0.1:800`
 
 Payload example:
 POST:
+`http://127.0.0.1:8000/database`
 ```json
 {
   "merge": 1
